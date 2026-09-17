@@ -1,81 +1,223 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sadia Clinic KHI - OPD</title>
+<title>Sadia Clinic KHI - FINAL</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
 body{background:#eaf0ff;padding-bottom:20px}
-.ayat{text-align:center;font-size:26px;color:#b8860b;padding:10px;background:#fff}
+.ayat{text-align:center;font-size:24px;color:#b8860b;padding:10px;background:#fff}
 .card{border-radius:18px;padding:14px;margin:10px auto;max-width:1100px;box-shadow:0 8px 20px rgba(0,0,0,.07)}
 .logo-card{background:#fff;border:3px solid #1e90ff;text-align:center}
 .hospital-card{background:linear-gradient(135deg,#1e90ff,#0a2463);color:#fff;text-align:center;line-height:1.6}
 .doctor-card{background:linear-gradient(135deg,#ffe9b5,#ffda8a);color:#12307a;text-align:center;font-weight:800}
 .form-card{background:#fff}
-input,select,textarea{width:100%;padding:12px;border-radius:12px;border:2px solid #cbd5e1;margin:6px 0;font-size:14px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:700px){.grid{grid-template-columns:1fr}}
-.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px 14px;border-radius:10px;font-weight:800;cursor:pointer}
-.tab{padding:10px 16px;background:#fff;border-radius:20px;cursor:pointer;font-weight:700;display:inline-block;margin:4px;box-shadow:0 2px 6px #0001;text-decoration:none;color:#0a2a7a}
+input,select,textarea{width:100%;padding:13px;border-radius:12px;border:2px solid #cbd5e1;margin:6px 0;font-size:15px}
+.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:13px 14px;border-radius:10px;font-weight:800;cursor:pointer;width:100%}
+.small-btn{padding:8px 12px;font-size:13px;border-radius:8px;margin:3px;display:inline-block;cursor:pointer;border:none}
+.btn-green{background:#10b981;color:#fff}.btn-red{background:#ef4444;color:#fff}.btn-blue{background:#0a4eb5;color:#fff}.btn-orange{background:#f59e0b;color:#fff}
+.tab{padding:10px 16px;background:#fff;border-radius:20px;font-weight:700;display:inline-block;margin:4px;box-shadow:0 2px 6px #0001;text-decoration:none;color:#0a2a7a;cursor:pointer}
 .tab.active{background:#0a4eb5;color:#fff}
 .hidden{display:none}
+.img-preview img{width:80px;height:80px;border-radius:8px;border:2px solid #0a4eb5;margin:4px;object-fit:cover}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:#0009;display:flex;align-items:center;justify-content:center;z-index:9999}
+.modalBox{background:#fff;padding:18px;border-radius:16px;max-width:95%;max-height:95%;overflow:auto;width:650px}
 </style></head><body>
 <div class="ayat">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
 <div class="card logo-card"><img src="logo.png" width="85" style="border-radius:50%"><br><b>Sadia Clinic KHI</b><br><small>OPD Management System</small></div>
-<div class="card hospital-card"><h2>Sadia Clinic Karachi</h2>Shop No.1, Plot No. 433, Sector C, Mariam Masjid Road,<br>Eidgah Chowk, Manzoor Colony, Karachi.</div>
+<div class="card hospital-card"><h2>Sadia Clinic Karachi</h2>Shop No.1, Plot No.433, Sector C, Mariam Masjid Road,<br>Eidgah Chowk, Manzoor Colony, Karachi.</div>
 <div class="card doctor-card">Dr. M. Zeeshan | Dr. Hina Sadia | Dr. Amir Ali Qureshi - 5 PM to 10 PM</div>
-<div style="max-width:1100px;margin:10px auto;display:flex;justify-content:space-between;padding:0 10px;flex-wrap:wrap"><div><div class="tab active" id="t1" onclick="showTab('add')">New OPD Entry</div><div class="tab" id="t2" onclick="showTab('list')">All Records</div><div class="tab" id="t3" onclick="showTab('patient')">Patient Check</div></div><div><a href="index.html" class="tab">Main Site</a><a href="admin.html" class="tab" style="background:#dcfce7;color:#166534">Admin →</a></div></div>
+
+<div style="max-width:1100px;margin:10px auto;display:flex;justify-content:space-between;padding:0 10px;flex-wrap:wrap">
+<div><div class="tab active" id="t1" onclick="showTab('add')">New OPD Entry</div><div class="tab" id="t2" onclick="showTab('list')">All Records</div><div class="tab" id="t3" onclick="showTab('patient')">Patient Check</div></div>
+<div><a href="index.html" class="tab">Main Site</a><a href="admin.html" class="tab" style="background:#dcfce7">Admin →</a></div>
+</div>
+
 <div id="tab-add" class="card form-card">
 <h3 style="color:#0a4eb5">New OPD Entry</h3>
-<div id="adminLoginBox" style="margin-top:12px">
-<p style="font-size:13px;color:#0a4eb5;font-weight:700">🔒 Authorized Login Only</p>
-<input id="aUser" type="text" placeholder="Enter Admin ID" autocomplete="username">
-<input id="aPass" type="password" placeholder="Enter Password" autocomplete="current-password">
-<button class="btn" style="margin-top:8px;width:100%" onclick="doLogin()">Login</button>
-<p id="loginError" style="color:red;font-size:12px;margin-top:8px;display:none"></p>
+<div id="loginBox">
+<p style="font-size:13px;color:#0a4eb5;font-weight:700;margin-top:10px">🔒 Enter Password to Unlock</p>
+<input id="aPass" type="password" placeholder="Enter Password">
+<button class="btn" style="margin-top:10px" onclick="doLogin()">Unlock OPD</button>
+<p id="loginError" style="color:red;font-size:12px;display:none;margin-top:8px"></p>
 </div>
+
 <div id="opdForm" class="hidden">
-<div class="grid"><input id="pName" type="text" placeholder="Patient Name *"><input id="pAge" type="text" placeholder="Age"><input id="pDate" type="date"><input id="pCell" type="text" placeholder="Cell *"></div>
-<input id="pDiag" type="text" placeholder="Diagnosis"><textarea id="pPres" rows="3" placeholder="Prescription"></textarea>
-<input id="pPresImages" type="file" accept="image/*" multiple>
-<div class="grid"><select id="pConsult"><option>Dr. M. Zeeshan</option><option>Dr. Hina Sadia</option><option>Dr. Amir Ali Qureshi</option></select><input id="pFee" type="number" placeholder="Fee"><input id="pFollow" type="date"></div>
-<button class="btn" onclick="saveOPD()" style="background:linear-gradient(90deg,#00b894,#00cec9);margin-top:10px;width:100%">Save OPD Record</button>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<input id="pName" placeholder="Patient Name *"><input id="pAge" placeholder="Age">
+<input id="pDate" type="date"><input id="pCell" type="tel" placeholder="Cell *">
+</div>
+<input id="pDiag" placeholder="Diagnosis">
+<textarea id="pPres" rows="2" placeholder="Prescription Text"></textarea>
+
+<!-- PRESCRIPTION WITH AUTO COMPRESS -->
+<div style="border:2px dashed #1e90ff;border-radius:12px;padding:10px;margin:10px 0">
+<b>📸 Prescription (Auto-Compressed):</b><br><small style="color:#64748b">2MB pic auto 100KB ho jayegi</small><br>
+<input id="presCam" type="file" accept="image/*" capture="environment" class="hidden" onchange="handlePresFiles(this.files)">
+<input id="presGal" type="file" accept="image/*" multiple class="hidden" onchange="handlePresFiles(this.files)">
+<div style="margin-top:8px">
+<button class="small-btn btn-blue" onclick="document.getElementById('presCam').click()">📷 Camera</button>
+<button class="small-btn btn-green" onclick="document.getElementById('presGal').click()">🖼️ Gallery</button>
+<button class="small-btn btn-red" onclick="presImages=[];updatePresPreview()">Clear</button>
+<span id="presSize" style="font-size:11px;color:green;margin-left:8px"></span>
+</div>
+<div id="presPreview" class="img-preview"></div>
+</div>
+
+<!-- TEST REPORTS WITH AUTO COMPRESS -->
+<div style="border:2px dashed #10b981;border-radius:12px;padding:10px;margin:10px 0">
+<b>🧪 Test Reports (Max 5 - Auto-Compressed):</b><br><small style="color:#64748b">Report pics bhi auto compress</small><br>
+<input id="testCam" type="file" accept="image/*" capture="environment" class="hidden" onchange="handleTestFiles(this.files)">
+<input id="testGal" type="file" accept="image/*" multiple class="hidden" onchange="handleTestFiles(this.files)">
+<div style="margin-top:8px">
+<button class="small-btn btn-blue" onclick="document.getElementById('testCam').click()">📷 Test Camera</button>
+<button class="small-btn btn-green" onclick="document.getElementById('testGal').click()">🖼️ Test Gallery</button>
+<button class="small-btn btn-red" onclick="testImages=[];updateTestPreview()">Clear</button>
+<span id="testSize" style="font-size:11px;color:green;margin-left:8px"></span>
+</div>
+<div id="testPreview" class="img-preview"></div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+<select id="pConsult"><option>Dr. M. Zeeshan</option><option>Dr. Hina Sadia</option><option>Dr. Amir Ali Qureshi</option></select>
+<input id="pFee" type="number" inputmode="numeric" placeholder="Doctor Fee">
+<input id="pService" type="number" inputmode="numeric" placeholder="Service Charges">
+</div>
+<input id="pFollow" type="date">
+<button class="btn" id="saveBtn" onclick="saveOPD()" style="background:linear-gradient(90deg,#00b894,#00cec9);margin-top:10px">Save OPD Record</button>
+<button class="btn hidden" id="updateBtn" onclick="updateOPD()" style="background:#f59e0b;margin-top:10px">Update Record</button>
 <div id="saveMsg" class="hidden" style="background:#dcfce7;padding:10px;border-radius:8px;margin-top:10px;text-align:center;font-weight:800;color:#166534">✅ Saved!</div>
 </div></div>
-<div id="tab-list" class="card form-card hidden"><h3>All Records <span id="totalCount"></span></h3><input id="searchAll" type="text" placeholder="Search Name/Cell..." onkeyup="renderList()"><div style="overflow:auto"><table id="opdTable" border="1" style="width:100%;border-collapse:collapse;margin-top:10px;font-size:13px"></table></div></div>
-<div id="tab-patient" class="card form-card hidden"><h3 style="text-align:center">Patient Check</h3><div style="display:flex;gap:8px;max-width:500px;margin:12px auto"><input id="patSearchCell" type="text" placeholder="Mobile Number"><button class="btn" style="width:auto" onclick="patientSearch()">Search</button></div><div id="patResult"></div></div>
+
+<div id="tab-list" class="card form-card hidden">
+<h3>All Records <span id="totalCount"></span></h3>
+<input id="searchAll" type="text" placeholder="Search Name/Cell..." onkeyup="renderList()" style="margin-top:8px">
+<div style="overflow:auto;margin-top:10px"><table id="opdTable" border="1" style="width:100%;border-collapse:collapse;font-size:13px"></table></div>
+</div>
+
+<div id="tab-patient" class="card form-card hidden">
+<h3 style="text-align:center">Patient Check</h3>
+<div style="display:flex;gap:8px;max-width:500px;margin:12px auto"><input id="patSearchCell" type="tel" placeholder="Mobile Number"><button class="btn" style="width:auto" onclick="patientSearch()">Search</button></div>
+<div id="patResult"></div>
+</div>
+
+<div id="viewModal" class="modal hidden" onclick="if(event.target==this)this.classList.add('hidden')"><div class="modalBox" id="modalContent"></div></div>
 
 <script>
-// FINAL FIXED LOGIN - 100% Working
+let presImages=[],testImages=[],editIndex=-1;
+
+// ONLY PASSWORD LOGIN - ID Removed
 function doLogin(){
-  var u = document.getElementById('aUser').value.trim().toLowerCase();
-  var p = document.getElementById('aPass').value.trim();
-  var err = document.getElementById('loginError');
-  console.log("Trying login:", u, p);
-  // Allow doctor, sadia-admin, sadia, admin - all with same password
-  if( (u==='doctor' || u==='sadia-admin' || u==='sadia' || u==='admin') && p==='sadia123' ){
-    document.getElementById('adminLoginBox').style.display='none';
-    document.getElementById('opdForm').classList.remove('hidden');
-    err.style.display='none';
-  } else {
-    err.style.display='block';
-    err.innerText = 'Invalid ID / Password. Use ID: doctor and Password: sadia123 (small letters)';
-  }
+ let p=document.getElementById('aPass').value.trim();
+ if(p==='sadia123'){
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('opdForm').classList.remove('hidden');
+ }else{
+  let e=document.getElementById('loginError');e.style.display='block';e.innerText='Wrong Password! Correct is sadia123';
+ }
 }
+
 function showTab(t){
-  document.getElementById('tab-add').classList.toggle('hidden',t!=='add');
-  document.getElementById('tab-list').classList.toggle('hidden',t!=='list');
-  document.getElementById('tab-patient').classList.toggle('hidden',t!=='patient');
-  document.getElementById('t1').classList.toggle('active',t==='add');
-  document.getElementById('t2').classList.toggle('active',t==='list');
-  document.getElementById('t3').classList.toggle('active',t==='patient');
-  if(t==='list')renderList()
+ document.getElementById('tab-add').classList.toggle('hidden',t!=='add');
+ document.getElementById('tab-list').classList.toggle('hidden',t!=='list');
+ document.getElementById('tab-patient').classList.toggle('hidden',t!=='patient');
+ document.getElementById('t1').classList.toggle('active',t==='add');
+ document.getElementById('t2').classList.toggle('active',t==='list');
+ document.getElementById('t3').classList.toggle('active',t==='patient');
+ if(t==='list')renderList();
 }
+
+// AUTO COMPRESS FUNCTION
+function compressImage(file, callback){
+ const reader = new FileReader();
+ reader.readAsDataURL(file);
+ reader.onload = e => {
+  const img = new Image();
+  img.src = e.target.result;
+  img.onload = () => {
+   const canvas = document.createElement('canvas');
+   const MAX_WIDTH = 1024;
+   let width = img.width, height = img.height;
+   if(width > MAX_WIDTH){ height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+   canvas.width = width; canvas.height = height;
+   const ctx = canvas.getContext('2d');
+   ctx.drawImage(img, 0, 0, width, height);
+   // Compress to 0.6 quality JPG
+   const compressed = canvas.toDataURL('image/jpeg', 0.6);
+   callback(compressed);
+  }
+ }
+}
+
+function handlePresFiles(files){
+ for(let f of files){
+  if(presImages.length>=5){alert('Max 5 pics');break}
+  compressImage(f, (comp)=>{
+   presImages.push(comp);
+   updatePresPreview();
+   document.getElementById('presSize').innerText = presImages.length + ' pics - Compressed ✓ ('+Math.round(comp.length/1024)+'KB)';
+  });
+ }
+}
+function updatePresPreview(){document.getElementById('presPreview').innerHTML=presImages.map((im,i)=>`<span style="position:relative"><img src="${im}"><span onclick="presImages.splice(${i},1);updatePresPreview()" style="position:absolute;top:-6px;right:-2px;background:red;color:#fff;border-radius:50%;padding:0 5px;cursor:pointer">x</span></span>`).join('')}
+
+function handleTestFiles(files){
+ for(let f of files){
+  if(testImages.length>=5){alert('Max 5 pics');break}
+  compressImage(f, (comp)=>{
+   testImages.push(comp);
+   updateTestPreview();
+   document.getElementById('testSize').innerText = testImages.length + ' reports - Compressed ✓ ('+Math.round(comp.length/1024)+'KB)';
+  });
+ }
+}
+function updateTestPreview(){document.getElementById('testPreview').innerHTML=testImages.map((im,i)=>`<span style="position:relative"><img src="${im}"><span onclick="testImages.splice(${i},1);updateTestPreview()" style="position:absolute;top:-6px;right:-2px;background:red;color:#fff;border-radius:50%;padding:0 5px;cursor:pointer">x</span></span>`).join('')}
+
 function saveOPD(){
-  var rec={name:document.getElementById('pName').value,age:document.getElementById('pAge').value,date:document.getElementById('pDate').value||new Date().toISOString().slice(0,10),cell:document.getElementById('pCell').value,diag:document.getElementById('pDiag').value,pres:document.getElementById('pPres').value,consult:document.getElementById('pConsult').value,fee:document.getElementById('pFee').value,follow:document.getElementById('pFollow').value};
-  if(!rec.name || !rec.cell){alert('Name & Cell required');return}
-  var d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');d.unshift(rec);localStorage.setItem('sadia_opd',JSON.stringify(d));
-  document.getElementById('saveMsg').classList.remove('hidden');setTimeout(()=>document.getElementById('saveMsg').classList.add('hidden'),2000);
+ let rec={name:pName.value.trim(),age:pAge.value.trim(),date:pDate.value||new Date().toISOString().slice(0,10),cell:pCell.value.trim(),diag:pDiag.value.trim(),pres:pPres.value.trim(),consult:pConsult.value,fee:pFee.value,service:pService.value,follow:pFollow.value,presImages:[...presImages],testImages:[...testImages]};
+ if(!rec.name||!rec.cell){alert('Name & Cell required');return}
+ let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');d.unshift(rec);localStorage.setItem('sadia_opd',JSON.stringify(d));
+ clearForm();let m=document.getElementById('saveMsg');m.classList.remove('hidden');setTimeout(()=>m.classList.add('hidden'),2000);renderList();
 }
-function renderList(){var q=document.getElementById('searchAll').value.toLowerCase();var d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');document.getElementById('totalCount').innerText='('+d.length+')';var f=d.filter(r=>(r.name+r.cell).toLowerCase().includes(q));var h='<tr><th>#</th><th>Date</th><th>Patient</th><th>Cell</th></tr>';f.forEach((r,i)=>{h+=`<tr><td>${i+1}</td><td>${r.date}</td><td>${r.name}</td><td>${r.cell}</td></tr>`});document.getElementById('opdTable').innerHTML=h}
-function patientSearch(){var c=document.getElementById('patSearchCell').value.trim();var d=JSON.parse(localStorage.getItem('sadia_opd')||'[]').filter(r=>r.cell.includes(c));document.getElementById('patResult').innerHTML=d.length?d.map(r=>`<div style="border:1px solid #ddd;border-radius:10px;padding:10px;margin:8px 0">${r.name} - ${r.cell} - ${r.diag}</div>`).join(''):'<p style="text-align:center;color:red">No record</p>'}
-document.getElementById('pDate').valueAsDate=new Date();
+function clearForm(){pName.value='';pAge.value='';pCell.value='';pDiag.value='';pPres.value='';pFee.value='';pService.value='';presImages=[];testImages=[];updatePresPreview();updateTestPreview();document.getElementById('presSize').innerText='';document.getElementById('testSize').innerText='';editIndex=-1;saveBtn.classList.remove('hidden');updateBtn.classList.add('hidden')}
+function renderList(){
+ let q=document.getElementById('searchAll').value.toLowerCase();
+ let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');
+ document.getElementById('totalCount').innerText='('+d.length+')';
+ let h='<tr><th>#</th><th>Date</th><th>Patient</th><th>Cell</th><th>Total</th><th>Actions</th></tr>';
+ d.forEach((r,i)=>{
+  if((r.name+r.cell).toLowerCase().includes(q)){
+   let total=(Number(r.fee||0)+Number(r.service||0));
+   h+=`<tr><td>${i+1}</td><td>${r.date}</td><td>${r.name}</td><td>${r.cell}</td><td>${total}</td><td>
+   <button class="small-btn btn-blue" onclick="viewRec(${i})">View</button>
+   <button class="small-btn btn-orange" onclick="editRec(${i})">Edit</button>
+   <button class="small-btn btn-red" onclick="deleteRec(${i})">Del</button>
+   </td></tr>`;
+  }
+ });
+ document.getElementById('opdTable').innerHTML=h;
+}
+function viewRec(i){
+ let r=JSON.parse(localStorage.getItem('sadia_opd')||'[]')[i];
+ let total=Number(r.fee||0)+Number(r.service||0);
+ document.getElementById('modalContent').innerHTML=`<h3>${r.name} - ${r.cell}</h3><p><b>Date:</b> ${r.date} | <b>Age:</b> ${r.age}<br><b>Consult:</b> ${r.consult}<br><b>Diag:</b> ${r.diag}<br><b>Pres:</b> ${r.pres}<br><b>Fee:</b> ${r.fee} + <b>Service:</b> ${r.service} = <b>Total: ${total}</b><br><b>Follow:</b> ${r.follow}</p>
+ <b>Prescription (Compressed):</b><div style="display:flex;flex-wrap:wrap">${(r.presImages||[]).map(im=>`<a href="${im}" target="_blank"><img src="${im}" style="width:90px;height:90px;margin:4px;border-radius:8px;border:2px solid #0a4eb5"></a>`).join('')||'No'}</div>
+ <b>Test Reports (Compressed):</b><div style="display:flex;flex-wrap:wrap">${(r.testImages||[]).map(im=>`<a href="${im}" target="_blank"><img src="${im}" style="width:90px;height:90px;margin:4px;border-radius:8px;border:2px solid green"></a>`).join('')||'No'}</div>
+ <br><button class="btn" onclick="document.getElementById('viewModal').classList.add('hidden')">Close</button>`;
+ document.getElementById('viewModal').classList.remove('hidden');
+}
+function editRec(i){
+ let r=JSON.parse(localStorage.getItem('sadia_opd')||'[]')[i];
+ showTab('add');document.getElementById('loginBox').style.display='none';document.getElementById('opdForm').classList.remove('hidden');
+ pName.value=r.name;pAge.value=r.age;pDate.value=r.date;pCell.value=r.cell;pDiag.value=r.diag;pPres.value=r.pres;pConsult.value=r.consult;pFee.value=r.fee;pService.value=r.service||'';pFollow.value=r.follow;
+ presImages=[...(r.presImages||[])];testImages=[...(r.testImages||[])];updatePresPreview();updateTestPreview();
+ editIndex=i;saveBtn.classList.add('hidden');updateBtn.classList.remove('hidden');
+}
+function updateOPD(){
+ let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');
+ let r=d[editIndex];
+ r.name=pName.value;r.age=pAge.value;r.date=pDate.value;r.cell=pCell.value;r.diag=pDiag.value;r.pres=pPres.value;r.consult=pConsult.value;r.fee=pFee.value;r.service=pService.value;r.follow=pFollow.value;r.presImages=[...presImages];r.testImages=[...testImages];
+ localStorage.setItem('sadia_opd',JSON.stringify(d));clearForm();alert('Updated!');renderList();showTab('list');
+}
+function deleteRec(i){if(confirm('Delete?')){let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');d.splice(i,1);localStorage.setItem('sadia_opd',JSON.stringify(d));renderList()}}
+function patientSearch(){let c=patSearchCell.value.trim();let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]').filter(r=>r.cell.includes(c));patResult.innerHTML=d.length?d.map(r=>`<div style="border:1px solid #ddd;border-radius:10px;padding:10px;margin:8px 0">${r.name} - ${r.cell} - ${r.diag}</div>`).join(''):'<p style="text-align:center;color:red">No record</p>'}
+pDate.valueAsDate=new Date();
 </script></body></html>
