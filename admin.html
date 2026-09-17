@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Sadia Clinic Final</title>
+<title>Admin - Sadia Clinic</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#eaf0ff}
+body{background:#eaf0ff;padding-bottom:20px}
 .ayat{text-align:center;font-size:26px;color:#b8860b;padding:10px;background:#fff}
 .card{border-radius:18px;padding:14px;margin:10px auto;max-width:1100px;box-shadow:0 8px 20px rgba(0,0,0,.07)}
 .logo-card{background:#fff;border:3px solid #1e90ff;text-align:center}
-.hospital-card{background:linear-gradient(135deg,#1e90ff,#0a2463);color:#fff;text-align:center}
+.hospital-card{background:linear-gradient(135deg,#1e90ff,#0a2463);color:#fff;text-align:center;line-height:1.6}
 .doctor-card{background:linear-gradient(135deg,#ffe9b5,#ffda8a);color:#12307a;text-align:center;font-weight:800}
 .box{background:#fff}
 input{width:100%;padding:12px;border:2px solid #cbd5e1;border-radius:12px;margin:8px 0}
-.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px;width:100%;border-radius:12px;font-weight:800}
+.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px;width:100%;border-radius:12px;font-weight:800;cursor:pointer}
 #panel{display:none}
 table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}th,td{border:1px solid #e2e8f0;padding:8px}th{background:#0a2a7a;color:#fff}
 </style></head><body>
@@ -21,12 +21,13 @@ table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}th,td{b
 <div class="card doctor-card">Dr. M. Zeeshan | Dr. Hina Sadia | Dr. Amir Ali Qureshi</div>
 <div class="card box">
 <h2 style="text-align:center;color:#0a2a7a">🔒 Admin Login</h2>
-<div id="loginBox"><input id="user" type="text" placeholder="ID: doctor / sadia-admin"><input id="pass" type="password" placeholder="Pass: sadia123"><button class="btn" onclick="login()">Login</button></div>
-<div id="panel"><h3>📋 All OPD Records <span id="count"></span></h3><input id="search" type="text" placeholder="Search..." onkeyup="loadData()"><div style="overflow:auto"><table id="tbl"></table></div><div id="viewBox"></div></div>
+<div id="loginBox"><p style="font-size:12px;color:#64748b;text-align:center;margin-bottom:6px">Only Authorized Access</p><input id="user" type="text" placeholder="Enter Admin ID"><input id="pass" type="password" placeholder="Enter Password"><button class="btn" onclick="login()">Login</button></div>
+<div id="panel"><h3>All OPD Records <span id="count"></span></h3><input id="search" type="text" placeholder="Search..." onkeyup="loadData()"><div style="overflow:auto"><table id="tbl"></table></div></div>
 </div>
 <script>
-function login(){let u=user.value.trim().toLowerCase();let p=pass.value.trim();if((u==='doctor'||u==='sadia-admin'||u==='sadia'||u==='admin')&&p==='sadia123'){loginBox.style.display='none';panel.style.display='block';loadData()}else alert('Wrong ID/Pass')}
-function loadData(){let q=search.value.toLowerCase();let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');count.innerText='('+d.length+')';let f=d.filter(r=>(r.name+r.cell).toLowerCase().includes(q));let h='<tr><th>#</th><th>Date</th><th>Patient</th><th>Cell</th><th>Diagnosis</th><th>Action</th></tr>';f.forEach((r,i)=>{h+=`<tr><td>${i+1}</td><td>${r.date}</td><td><b>${r.name}</b> ${r.age}Y</td><td>${r.cell}</td><td>${r.diag}</td><td><button onclick="viewRec(${d.indexOf(r)})">View</button> <button onclick="delRec(${d.indexOf(r)})" style="color:red">Del</button></td></tr>`});tbl.innerHTML=h}
-function viewRec(i){let r=JSON.parse(localStorage.getItem('sadia_opd')||'[]')[i];viewBox.innerHTML=`<div style="border:2px solid #1e90ff;border-radius:12px;padding:12px;margin-top:10px;background:#f8faff"><b>${r.name} (${r.age}Y) - ${r.cell}</b><br>Date: ${r.date}<br>Diagnosis: ${r.diag}<br>Pres: ${r.pres}<br>${(r.presImages||[]).map(im=>`<img src="${im}" width="100">`).join('')}</div>`}
-function delRec(i){if(confirm('Delete?')){let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');d.splice(i,1);localStorage.setItem('sadia_opd',JSON.stringify(d));loadData()}}
+function login(){
+let u=user.value.trim().toLowerCase();let p=pass.value.trim();
+if((u==='doctor'||u==='sadia-admin'||u==='sadia'||u==='admin')&&p==='sadia123'){loginBox.style.display='none';panel.style.display='block';loadData()}else alert('Invalid ID / Password');
+}
+function loadData(){let q=search.value.toLowerCase();let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');count.innerText='('+d.length+')';let f=d.filter(r=>(r.name+r.cell).toLowerCase().includes(q));let h='<tr><th>#</th><th>Date</th><th>Patient</th><th>Cell</th><th>Diag</th></tr>';f.forEach((r,i)=>{h+=`<tr><td>${i+1}</td><td>${r.date}</td><td>${r.name}</td><td>${r.cell}</td><td>${r.diag}</td></tr>`});tbl.innerHTML=h}
 </script></body></html>
