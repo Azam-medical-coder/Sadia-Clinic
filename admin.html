@@ -1,35 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Sadia Clinic</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Sadia Clinic Colorful</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-body{font-family:Inter,sans-serif;background:#f1f5f9;margin:0;padding:20px}
-.box{max-width:900px;margin:auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 4px 15px #0001}
-h2{color:#0a2a7a;text-align:center}
-input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;margin:8px 0}
-.btn{background:#0a4eb5;color:#fff;border:none;padding:12px;width:100%;border-radius:8px;font-weight:700;cursor:pointer}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:#eaf0ff}
+.ayat{text-align:center;font-size:26px;color:#b8860b;padding:10px;background:#fff}
+.card{border-radius:18px;padding:14px;margin:10px auto;max-width:900px;box-shadow:0 8px 20px rgba(0,0,0,.07)}
+.logo-card{background:#fff;border:3px solid #1e90ff;text-align:center}
+.hospital-card{background:linear-gradient(135deg,#1e90ff,#0a2463);color:#fff;text-align:center}
+.doctor-card{background:linear-gradient(135deg,#ffe9b5,#ffda8a);color:#12307a;text-align:center;font-weight:800}
+.box{background:#fff;border-radius:18px;padding:20px}
+input{width:100%;padding:12px;border:2px solid #cbd5e1;border-radius:12px;margin:8px 0;font-size:14px}
+.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px;width:100%;border-radius:12px;font-weight:800;cursor:pointer;font-size:15px}
 table{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}
 th,td{border:1px solid #e2e8f0;padding:8px;text-align:left}
 th{background:#0a2a7a;color:#fff}
 #panel{display:none}
-</style>
-</head>
-<body>
-<div class="box">
-<h2>🔒 Sadia Clinic - Admin Login</h2>
-<div id="loginBox">
-<input id="user" placeholder="Username (doctor)">
+</style></head><body>
+
+<div class="ayat">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+<div class="card logo-card"><img src="logo.png" style="width:80px;border-radius:50%"><br><b style="color:#0a2a7a">Sadia Clinic KHI</b></div>
+<div class="card hospital-card"><h2 style="margin:0">Sadia Clinic Karachi</h2>Plot No.27, Allama Iqbal Road, Manzoor Colony, Karachi<br>Contact: 02135386116</div>
+<div class="card doctor-card">Dr. M. Zeeshan (General) | Dr. Hina Sadia (Gynae) | Dr. Amir Ali Qureshi (Neuro Physician)<br>⏰ Timings: 5:00 PM to 10:00 PM</div>
+
+<div class="card box">
+<h2 style="color:#0a2a7a;text-align:center">🔒 Sadia Clinic - Admin Login</h2>
+<div id="loginBox" style="margin-top:12px">
+<input id="user" placeholder="Username (doctor)" type="text">
 <input id="pass" type="password" placeholder="Password (sadia123)">
-<button class="btn" onclick="login()">Login</button>
-<p style="text-align:center;font-size:12px;color:#64748b;margin-top:10px"><a href="index.html">← Back to Website</a></p>
+<button class="btn" onclick="login()">Login to Admin</button>
+<p style="text-align:center;font-size:12px;margin-top:12px"><a href="index.html" style="text-decoration:none;background:#e0e7ff;padding:6px 14px;border-radius:20px;color:#0a2a7a;font-weight:700">← Back to Website</a> 
+<a href="opd.html" style="text-decoration:none;background:#dcfce7;padding:6px 14px;border-radius:20px;color:#166534;font-weight:700;margin-left:6px">OPD System →</a></p>
 </div>
 
 <div id="panel">
-<h3>📋 Recent Bookings (Netlify Forms par bhi check karein)</h3>
-<p style="font-size:12px;background:#e0f2fe;padding:8px;border-radius:6px">Sab bookings asal me yahan milengi: <a href="https://app.netlify.com/projects/sadiaclinic/forms" target="_blank">Netlify Forms Dashboard</a></p>
+<h3 style="color:#0a4eb5">📋 Recent Bookings</h3>
+<p style="font-size:12px;background:#e0f2fe;padding:10px;border-radius:10px;margin:8px 0">Sab bookings yahan + Netlify par milengi: <a href="https://app.netlify.com/projects/sadiaclinic/forms" target="_blank">Netlify Forms Dashboard</a></p>
 <div style="overflow:auto"><table id="tbl"><tr><th>Name</th><th>Phone</th><th>Doctor</th><th>Problem</th><th>TrxID</th><th>Time</th></tr></table></div>
-<button class="btn" style="background:#ef4444;margin-top:15px" onclick="localStorage.clear();location.reload()">Clear Local Data</button>
+<button class="btn" style="background:linear-gradient(90deg,#ef4444,#dc2626);margin-top:15px" onclick="localStorage.clear();location.reload()">Clear Local Data</button>
 </div>
 </div>
 
@@ -42,11 +51,7 @@ function login(){
  } else { alert('Galat ID / Password! ID: doctor , Pass: sadia123'); }
 }
 function loadData(){
- // This will show bookings if they were made on same device (demo)
- // Real bookings are in Netlify Forms
  const tbl=document.getElementById('tbl');
- tbl.innerHTML='<tr><th>Name</th><th>Phone</th><th>Doctor</th><th>Problem</th><th>TrxID</th><th>Time</th></tr><tr><td colspan=6 style="text-align:center;color:#64748b">Asal Bookings Netlify Forms Dashboard par ayengi. Local demo empty hai.</td></tr>';
+ tbl.innerHTML='<tr><th>Name</th><th>Phone</th><th>Doctor</th><th>Problem</th><th>TrxID</th><th>Time</th></tr><tr><td colspan=6 style="text-align:center;color:#64748b;padding:20px">Asal Bookings Netlify Forms Dashboard par ayengi.<br><small>Local demo empty hai - OPD records ke liye OPD System dekhein</small></td></tr>';
 }
-</script>
-</body>
-</html>
+</script></body></html>
