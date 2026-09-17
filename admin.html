@@ -1,57 +1,92 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Sadia Clinic Colorful</title>
+<title>Admin - Sadia Clinic - GitHub Version</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
 body{background:#eaf0ff}
 .ayat{text-align:center;font-size:26px;color:#b8860b;padding:10px;background:#fff}
-.card{border-radius:18px;padding:14px;margin:10px auto;max-width:900px;box-shadow:0 8px 20px rgba(0,0,0,.07)}
+.card{border-radius:18px;padding:14px;margin:10px auto;max-width:1100px;box-shadow:0 8px 20px rgba(0,0,0,.07)}
 .logo-card{background:#fff;border:3px solid #1e90ff;text-align:center}
 .hospital-card{background:linear-gradient(135deg,#1e90ff,#0a2463);color:#fff;text-align:center}
 .doctor-card{background:linear-gradient(135deg,#ffe9b5,#ffda8a);color:#12307a;text-align:center;font-weight:800}
-.box{background:#fff;border-radius:18px;padding:20px}
+.box{background:#fff;border-radius:18px;padding:16px}
 input{width:100%;padding:12px;border:2px solid #cbd5e1;border-radius:12px;margin:8px 0;font-size:14px}
-.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px;width:100%;border-radius:12px;font-weight:800;cursor:pointer;font-size:15px}
-table{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}
-th,td{border:1px solid #e2e8f0;padding:8px;text-align:left}
-th{background:#0a2a7a;color:#fff}
+.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px;width:100%;border-radius:12px;font-weight:800;cursor:pointer}
+.btn-small{padding:6px 10px;font-size:12px;width:auto;border-radius:8px;margin:2px}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}
+th,td{border:1px solid #e2e8f0;padding:8px;text-align:left;vertical-align:top}
+th{background:#0a2a7a;color:#fff;position:sticky;top:0}
 #panel{display:none}
+.search{max-width:400px}
+.img-prev img{width:50px;height:50px;border-radius:6px;border:1px solid #ddd;object-fit:cover;margin:2px}
 </style></head><body>
 
 <div class="ayat">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-<div class="card logo-card"><img src="logo.png" style="width:80px;border-radius:50%"><br><b style="color:#0a2a7a">Sadia Clinic KHI</b></div>
-<div class="card hospital-card"><h2 style="margin:0">Sadia Clinic Karachi</h2>Plot No.27, Allama Iqbal Road, Manzoor Colony, Karachi<br>Contact: 02135386116</div>
-<div class="card doctor-card">Dr. M. Zeeshan (General) | Dr. Hina Sadia (Gynae) | Dr. Amir Ali Qureshi (Neuro Physician)<br>⏰ Timings: 5:00 PM to 10:00 PM</div>
+<div class="card logo-card"><img src="logo.png" style="width:80px;border-radius:50%"><br><b style="color:#0a2a7a">Sadia Clinic KHI - Admin Panel</b></div>
+<div class="card hospital-card"><h2 style="margin:0">Sadia Clinic Karachi</h2>Plot No.27, Allama Iqbal Road, Manzoor Colony, Karachi | 02135386116</div>
+<div class="card doctor-card">Dr. M. Zeeshan | Dr. Hina Sadia | Dr. Amir Ali Qureshi<br>⏰ 5 PM to 10 PM - GitHub Version (No Netlify)</div>
 
 <div class="card box">
 <h2 style="color:#0a2a7a;text-align:center">🔒 Sadia Clinic - Admin Login</h2>
 <div id="loginBox" style="margin-top:12px">
-<input id="user" placeholder="Username (doctor)" type="text">
-<input id="pass" type="password" placeholder="Password (sadia123)">
-<button class="btn" onclick="login()">Login to Admin</button>
-<p style="text-align:center;font-size:12px;margin-top:12px"><a href="index.html" style="text-decoration:none;background:#e0e7ff;padding:6px 14px;border-radius:20px;color:#0a2a7a;font-weight:700">← Back to Website</a> 
-<a href="opd.html" style="text-decoration:none;background:#dcfce7;padding:6px 14px;border-radius:20px;color:#166534;font-weight:700;margin-left:6px">OPD System →</a></p>
+<input id="user" placeholder="Username: doctor" type="text">
+<input id="pass" type="password" placeholder="Password: sadia123">
+<button class="btn" onclick="login()">Login</button>
+<p style="text-align:center;font-size:12px;margin-top:12px"><a href="index.html" style="text-decoration:none;background:#e0e7ff;padding:6px 14px;border-radius:20px;color:#0a2a7a;font-weight:700">← Website</a> <a href="opd.html" style="text-decoration:none;background:#dcfce7;padding:6px 14px;border-radius:20px;color:#166534;font-weight:700">OPD System →</a></p>
 </div>
 
 <div id="panel">
-<h3 style="color:#0a4eb5">📋 Recent Bookings</h3>
-<p style="font-size:12px;background:#e0f2fe;padding:10px;border-radius:10px;margin:8px 0">Sab bookings yahan + Netlify par milengi: <a href="https://app.netlify.com/projects/sadiaclinic/forms" target="_blank">Netlify Forms Dashboard</a></p>
-<div style="overflow:auto"><table id="tbl"><tr><th>Name</th><th>Phone</th><th>Doctor</th><th>Problem</th><th>TrxID</th><th>Time</th></tr></table></div>
-<button class="btn" style="background:linear-gradient(90deg,#ef4444,#dc2626);margin-top:15px" onclick="localStorage.clear();location.reload()">Clear Local Data</button>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px">
+<h3 style="color:#0a4eb5">📋 All OPD Records (GitHub Storage) <span id="count" style="background:#e0e7ff;padding:4px 10px;border-radius:20px;font-size:12px"></span></h3>
+<input id="search" class="search" placeholder="Search Name / Cell / Diagnosis..." onkeyup="loadData()">
+</div>
+<p style="font-size:12px;background:#dcfce7;padding:8px;border-radius:8px;margin:8px 0;color:#166534">✅ Ab ye data Netlify par nahi, yahin Admin Panel me show hoga (GitHub + LocalStorage)</p>
+<div style="overflow:auto;max-height:70vh"><table id="tbl"></table></div>
+<div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-small" style="background:#0a1930" onclick="exportData()">📥 Export Backup</button><button class="btn btn-small" style="background:#ef4444" onclick="clearData()">🗑️ Clear All</button></div>
+<div id="viewBox" style="margin-top:14px"></div>
 </div>
 </div>
 
 <script>
 function login(){
- if(document.getElementById('user').value==='doctor' && document.getElementById('pass').value==='sadia123'){
-   document.getElementById('loginBox').style.display='none';
-   document.getElementById('panel').style.display='block';
-   loadData();
- } else { alert('Galat ID / Password! ID: doctor , Pass: sadia123'); }
+ if(user.value==='doctor' && pass.value==='sadia123'){
+   loginBox.style.display='none'; panel.style.display='block'; loadData();
+ } else alert('Wrong ID/Pass - doctor / sadia123');
 }
 function loadData(){
- const tbl=document.getElementById('tbl');
- tbl.innerHTML='<tr><th>Name</th><th>Phone</th><th>Doctor</th><th>Problem</th><th>TrxID</th><th>Time</th></tr><tr><td colspan=6 style="text-align:center;color:#64748b;padding:20px">Asal Bookings Netlify Forms Dashboard par ayengi.<br><small>Local demo empty hai - OPD records ke liye OPD System dekhein</small></td></tr>';
+ let q=(search.value||'').toLowerCase();
+ let data=JSON.parse(localStorage.getItem('sadia_opd')||'[]');
+ count.innerText=data.length+' Records';
+ let filtered=data.filter(r=>(r.name+r.cell+r.diag+r.consult).toLowerCase().includes(q));
+ let html='<tr><th>#</th><th>Date</th><th>Patient</th><th>Cell</th><th>Consultant</th><th>Diagnosis</th><th>Prescription</th><th>Images</th><th>Action</th></tr>';
+ if(!filtered.length) html+='<tr><td colspan=9 style="text-align:center;padding:20px;color:#64748b">Koi record nahi mila. OPD me ja kar New Entry karen.</td></tr>';
+ filtered.forEach((r,idx)=>{
+  let real=data.indexOf(r);
+  html+=`<tr>
+   <td>${idx+1}</td><td>${r.date}<br><small>${r.follow? 'Follow: '+r.follow:''}</small></td>
+   <td><b>${r.name}</b><br><small>${r.age}Y</small></td>
+   <td>${r.cell}</td><td><small>${r.consult}</small></td>
+   <td>${r.diag}</td>
+   <td><small>${(r.pres||'').slice(0,50)}</small><br><small style="color:#0a4eb5">${r.presImages? r.presImages.length+' 📸 Prescription':''}</small></td>
+   <td><div class="img-prev">${r.presImages? r.presImages.slice(0,2).map(im=>`<img src="${im}">`).join(''):''} ${r.images? r.images.slice(0,2).map(im=>`<img src="${im}">`).join(''):''}</div></td>
+   <td><button class="btn btn-small" onclick="viewRec(${real})">View</button><button class="btn btn-small" style="background:#ef4444" onclick="delRec(${real})">Del</button></td>
+  </tr>`;
+ });
+ document.getElementById('tbl').innerHTML=html;
 }
+function viewRec(i){
+ let r=JSON.parse(localStorage.getItem('sadia_opd')||'[]')[i];
+ viewBox.innerHTML=`<div style="border:2px solid #1e90ff;border-radius:14px;padding:14px;background:#f8faff">
+  <div style="display:flex;justify-content:space-between"><b style="font-size:16px">${r.name} (${r.age}Y) - ${r.cell}</b><button class="btn btn-small" onclick="viewBox.innerHTML=''">Close</button></div>
+  <p style="font-size:13px;margin:8px 0"><b>Date:</b> ${r.date} | <b>Follow:</b> ${r.follow||'-'} | <b>Consultant:</b> ${r.consult} | <b>Fee:</b> ${r.fee}+${r.service}</p>
+  <p><b>Diagnosis:</b> ${r.diag}</p><p style="background:#f0fdf4;padding:8px;border-radius:8px"><b>Prescription:</b><br>${r.pres.replace(/\n/g,'<br>')}</p>
+  ${r.presImages?.length? `<b>📸 Prescription Photos:</b><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0">${r.presImages.map(im=>`<a href="${im}" target="_blank"><img src="${im}" style="width:120px;height:120px;border-radius:10px;border:2px solid #1e90ff"></a>`).join('')}</div>`:''}
+  ${r.images?.length? `<b>Test Reports:</b><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0">${r.images.map(im=>`<a href="${im}" target="_blank"><img src="${im}" style="width:120px;height:120px;border-radius:10px"></a>`).join('')}</div>`:''}
+ </div>`;
+ window.scrollTo(0, document.body.scrollHeight);
+}
+function delRec(i){if(!confirm('Delete this record?'))return; let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]'); d.splice(i,1); localStorage.setItem('sadia_opd',JSON.stringify(d)); loadData(); viewBox.innerHTML='';}
+function clearData(){if(!confirm('Sare records delete karne hain?'))return; localStorage.removeItem('sadia_opd'); loadData();}
+function exportData(){let d=localStorage.getItem('sadia_opd')||'[]'; let b=new Blob([d],{type:'application/json'}); let u=URL.createObjectURL(b); let a=document.createElement('a'); a.href=u; a.download='sadia_clinic_backup_'+new Date().toISOString().slice(0,10)+'.json'; a.click();}
 </script></body></html>
