@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sadia Clinic - OPD Final</title>
+<title>Sadia Clinic - OPD</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
 body{background:#eaf0ff;padding-bottom:20px}
@@ -14,21 +14,22 @@ input,select,textarea{width:100%;padding:12px;border-radius:12px;border:2px soli
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:700px){.grid{grid-template-columns:1fr}}
 .btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:800;cursor:pointer}
-.tab{padding:10px 16px;background:#fff;border-radius:20px;cursor:pointer;font-weight:700;display:inline-block;margin:4px;box-shadow:0 2px 6px #0001}
+.tab{padding:10px 16px;background:#fff;border-radius:20px;cursor:pointer;font-weight:700;display:inline-block;margin:4px;box-shadow:0 2px 6px #0001;text-decoration:none;color:#0a2a7a}
 .tab.active{background:#0a4eb5;color:#fff}
 .hidden{display:none}
 </style></head><body>
 <div class="ayat">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
 <div class="card logo-card"><img src="logo.png" width="85" style="border-radius:50%"><br><b>Sadia Clinic KHI</b><br><small>OPD Management System</small></div>
-
 <div class="card hospital-card"><h2>Sadia Clinic Karachi</h2>Shop No.1, Plot No. 433, Sector C, Mariam Masjid Road,<br>Eidgah Chowk, Manzoor Colony, Karachi.</div>
+<div class="card doctor-card">Dr. M. Zeeshan | Dr. Hina Sadia | Dr. Amir Ali Qureshi - 5 PM to 10 PM</div>
 
-<div class="card doctor-card">Dr. M. Zeeshan - General Disease | Dr. Hina Sadia - Gynae<br>Dr. Amir Ali Qureshi - Neuro Physician - 5 PM to 10 PM</div>
+<div style="max-width:1100px;margin:10px auto;display:flex;justify-content:space-between;padding:0 10px;flex-wrap:wrap;gap:8px">
+<div><div class="tab active" id="t1" onclick="showTab('add')">New OPD Entry</div><div class="tab" id="t2" onclick="showTab('list')">All Records</div><div class="tab" id="t3" onclick="showTab('patient')">Patient Check</div></div>
+<div><a href="index.html" class="tab" style="background:#fff">Main Site</a><a href="admin.html" class="tab" style="background:#dcfce7;color:#166534">Admin →</a></div>
+</div>
 
-<div style="max-width:1100px;margin:10px auto;display:flex;gap:8px;padding:0 10px"><div class="tab active">New OPD Entry</div><a href="admin.html" class="tab" style="text-decoration:none">Admin Panel →</a></div>
-
-<div class="card form-card">
-<h3 style="color:#0a4eb5">New OPD Entry (Admin)</h3>
+<div id="tab-add" class="card form-card">
+<h3 style="color:#0a4eb5">New OPD Entry</h3>
 <div id="adminLogin" style="margin-top:12px">
 <p style="font-size:13px;color:#0a4eb5;font-weight:700">🔒 Authorized Login Only</p>
 <div class="grid"><input id="aUser" type="text" placeholder="Enter Admin ID"><input id="aPass" type="password" placeholder="Enter Password"></div>
@@ -43,19 +44,15 @@ input,select,textarea{width:100%;padding:12px;border-radius:12px;border:2px soli
 <div id="saveMsg" class="hidden" style="background:#dcfce7;padding:10px;border-radius:8px;margin-top:10px;text-align:center;font-weight:800;color:#166534">✅ Saved!</div>
 </div></div>
 
+<div id="tab-list" class="card form-card hidden"><h3>All Records <span id="totalCount"></span></h3><input id="searchAll" type="text" placeholder="Search Name/Cell..." onkeyup="renderList()"><div style="overflow:auto"><table id="opdTable" border="1" style="width:100%;border-collapse:collapse;margin-top:10px;font-size:13px"></table></div></div>
+<div id="tab-patient" class="card form-card hidden"><h3 style="text-align:center">Patient Check</h3><div style="display:flex;gap:8px;max-width:500px;margin:12px auto"><input id="patSearchCell" type="text" placeholder="Mobile Number"><button class="btn" style="width:auto" onclick="patientSearch()">Search</button></div><div id="patResult"></div></div>
+
 <script>
-function adminLogin(){
-let u=document.getElementById('aUser').value.trim().toLowerCase();
-let p=document.getElementById('aPass').value.trim();
-if((u==='doctor'||u==='sadia-admin'||u==='sadia'||u==='admin') && p==='sadia123'){
-document.getElementById('adminLogin').classList.add('hidden');
-document.getElementById('opdForm').classList.remove('hidden');
-}else alert('Invalid ID / Password');
-}
-function saveOPD(){
-let rec={name:pName.value,age:pAge.value,date:pDate.value||new Date().toISOString().slice(0,10),cell:pCell.value,diag:pDiag.value,pres:pPres.value,consult:pConsult.value,fee:pFee.value,follow:pFollow.value};
-let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');d.unshift(rec);localStorage.setItem('sadia_opd',JSON.stringify(d));
-document.getElementById('saveMsg').classList.remove('hidden');setTimeout(()=>document.getElementById('saveMsg').classList.add('hidden'),2000);
-}
-document.getElementById('pDate').valueAsDate=new Date();
+let presImagesBase64=[];
+function showTab(t){document.getElementById('tab-add').classList.toggle('hidden',t!=='add');document.getElementById('tab-list').classList.toggle('hidden',t!=='list');document.getElementById('tab-patient').classList.toggle('hidden',t!=='patient');document.getElementById('t1').classList.toggle('active',t==='add');document.getElementById('t2').classList.toggle('active',t==='list');document.getElementById('t3').classList.toggle('active',t==='patient');if(t==='list')renderList()}
+function adminLogin(){let u=aUser.value.trim().toLowerCase();let p=aPass.value.trim();if((u==='doctor'||u==='sadia-admin'||u==='sadia'||u==='admin')&&p==='sadia123'){adminLogin.classList.add('hidden');opdForm.classList.remove('hidden')}else alert('Invalid ID / Password')}
+function saveOPD(){let rec={name:pName.value,age:pAge.value,date:pDate.value||new Date().toISOString().slice(0,10),cell:pCell.value,diag:pDiag.value,pres:pPres.value,consult:pConsult.value,fee:pFee.value,follow:pFollow.value};let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');d.unshift(rec);localStorage.setItem('sadia_opd',JSON.stringify(d));saveMsg.classList.remove('hidden');setTimeout(()=>saveMsg.classList.add('hidden'),2000)}
+function renderList(){let q=searchAll.value.toLowerCase();let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]');totalCount.innerText='('+d.length+')';let f=d.filter(r=>(r.name+r.cell).toLowerCase().includes(q));let h='<tr><th>#</th><th>Date</th><th>Patient</th><th>Cell</th></tr>';f.forEach((r,i)=>{h+=`<tr><td>${i+1}</td><td>${r.date}</td><td>${r.name}</td><td>${r.cell}</td></tr>`});opdTable.innerHTML=h}
+function patientSearch(){let c=patSearchCell.value.trim();let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]').filter(r=>r.cell.includes(c));patResult.innerHTML=d.length?d.map(r=>`<div style="border:1px solid #ddd;border-radius:10px;padding:10px;margin:8px 0">${r.name} - ${r.cell} - ${r.diag}</div>`).join(''):'<p style="text-align:center;color:red">No record</p>'}
+pDate.valueAsDate=new Date();
 </script></body></html>
