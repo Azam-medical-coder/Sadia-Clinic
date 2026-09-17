@@ -1,32 +1,129 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Patient Check - Sadia Clinic</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#eaf0ff}
-.ayat{text-align:center;font-size:26px;color:#b8860b;padding:10px;background:#fff}
+body{background:#eaf0ff;padding-bottom:20px}
+.ayat{text-align:center;font-size:24px;color:#b8860b;padding:10px;background:#fff}
 .card{border-radius:18px;padding:16px;margin:10px auto;max-width:900px;box-shadow:0 8px 20px rgba(0,0,0,.07)}
 .logo-card{background:#fff;border:3px solid #1e90ff;text-align:center}
 .hospital-card{background:linear-gradient(135deg,#1e90ff,#0a2463);color:#fff;text-align:center;line-height:1.6}
 .form-card{background:#fff}
 input{width:100%;padding:14px;border-radius:12px;border:2px solid #cbd5e1;margin:8px 0;font-size:16px}
-.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:800;cursor:pointer}
+.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px 16px;border-radius:10px;font-weight:800;cursor:pointer}
+.small-btn{padding:7px 12px;font-size:13px;border-radius:8px;margin:3px;border:none;cursor:pointer;font-weight:700}
+.btn-blue{background:#0a4eb5;color:#fff}.btn-green{background:#10b981;color:#fff}.btn-red{background:#ef4444;color:#fff}.btn-orange{background:#f59e0b;color:#fff}
+.hidden{display:none!important}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:9999}
+.modalBox{background:#fff;padding:18px;border-radius:16px;max-width:95%;max-height:90%;overflow:auto;width:700px}
+.img-box img{width:85px;height:85px;border-radius:8px;border:2px solid #0a4eb5;margin:4px;object-fit:cover}
 </style></head><body>
 <div class="ayat">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
 <div class="card logo-card"><img src="logo.png" width="85" style="border-radius:50%"><br><b>Sadia Clinic KHI</b><br><small>Patient Record System</small></div>
-<div class="card hospital-card"><h2>Sadia Clinic Karachi</h2>Shop No.1, Plot No. 433, Sector C, Mariam Masjid Road,<br>Eidgah Chowk, Manzoor Colony, Karachi.</div>
+<div class="card hospital-card"><h2>Sadia Clinic Karachi</h2>Shop No.1, Plot No.433, Sector C, Mariam Masjid Road,<br>Eidgah Chowk, Manzoor Colony, Karachi.</div>
+
 <div class="card form-card">
 <h2 style="text-align:center;color:#0a4eb5">🔍 Patient Record Check</h2>
-<p style="text-align:center;color:#64748b;font-size:14px;margin:8px 0">Apna Mobile Number likh kar Search karein</p>
-<div style="display:flex;gap:8px;max-width:500px;margin:16px auto"><input id="cell" type="text" placeholder="0300-XXXXXXX"><button class="btn" onclick="search()">Search</button></div>
-<div id="result"></div>
-<p style="text-align:center;margin-top:16px"><a href="index.html" style="text-decoration:none;background:#e0e7ff;padding:8px 14px;border-radius:20px;color:#0a2a7a;font-weight:700">Main Site</a></p>
+<p style="text-align:center;color:#64748b;font-size:14px">Apna Mobile Number likh kar Search karein</p>
+<div style="display:flex;gap:8px;max-width:600px;margin:16px auto">
+<input id="cell" type="tel" placeholder="0300-XXXXXXX" onkeydown="if(event.key==='Enter')search()">
+<button class="btn" style="width:auto" onclick="search()">Search</button>
 </div>
+<div id="result"></div>
+<p style="text-align:center;margin-top:16px"><a href="index.html" style="text-decoration:none;background:#e0e7ff;padding:8px 16px;border-radius:20px;color:#0a2a7a;font-weight:700">Main Site</a>
+<a href="opd.html" style="text-decoration:none;background:#dcfce7;padding:8px 16px;border-radius:20px;color:#166534;font-weight:700;margin-left:8px">OPD Login</a></p>
+</div>
+
+<div id="viewModal" class="modal hidden"><div class="modalBox" id="modalContent"></div></div>
+
 <script>
+let lastData=[];
 function search(){
-let c=cell.value.trim();if(!c){alert('Number likhein');return}
-let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]').filter(r=>r.cell.includes(c));
-if(!d.length){result.innerHTML='<p style="text-align:center;color:red;padding:20px">Koi record nahi mila</p>';return}
-result.innerHTML=d.map(r=>`<div style="border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin:12px 0;background:#fff"><b style="font-size:16px">${r.name} (${r.age}Y)</b> - ${r.date}<br><small>${r.consult}</small><br><br><b>Diagnosis:</b> ${r.diag}<br><div style="background:#f0fdf4;padding:8px;border-radius:8px;margin-top:8px"><b>Prescription:</b> ${r.pres||'Photo me dekhein'}</div>${r.presImages?.length?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${r.presImages.map(im=>`<a href="${im}" target="_blank"><img src="${im}" style="width:110px;height:110px;border-radius:8px;border:2px solid #0a4eb5"></a>`).join('')}</div>`:''}</div>`).join('');
+ let c=document.getElementById('cell').value.trim();
+ if(!c){alert('Number likhein');return}
+ let all=JSON.parse(localStorage.getItem('sadia_opd')||'[]');
+ let d=all.filter(r=>r.cell.includes(c));
+ lastData=d;
+ if(!d.length){result.innerHTML='<p style="text-align:center;color:red;padding:20px">Koi record nahi mila - '+c+'</p>';return}
+ result.innerHTML=d.map((r,idx)=>{
+   let realIndex=all.indexOf(r);
+   return `<div style="border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin:12px 0;background:#fff">
+   <div style="display:flex;justify-content:space-between;align-items:center">
+   <div><b style="font-size:16px">${r.name} (${r.age||''})</b> - ${r.date}<br><small style="color:#0a4eb5">${r.consult}</small></div>
+   <button class="small-btn btn-blue" onclick="viewRec(${realIndex})">👁️ View</button>
+   </div>
+   <div style="margin-top:8px"><b>Diagnosis:</b> ${r.diag||'-'}</div>
+   <div style="background:#f0fdf4;padding:8px;border-radius:8px;margin-top:8px;font-size:13px"><b>Prescription:</b> ${r.pres||'Image me dekhein'}</div>
+   <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+     <button class="small-btn btn-blue" onclick="viewRec(${realIndex})">View Full</button>
+     <button class="small-btn btn-green" onclick="downloadPres(${realIndex})">⬇️ Prescription Download</button>
+     <button class="small-btn btn-orange" onclick="openPDF(${realIndex})">📄 PDF Open / Save</button>
+   </div>
+   </div>`;
+ }).join('');
 }
+
+function viewRec(i){
+ let r=JSON.parse(localStorage.getItem('sadia_opd')||'[]')[i];
+ let total=Number(r.fee||0)+Number(r.service||0);
+ document.getElementById('modalContent').innerHTML=`
+ <div style="text-align:center;border-bottom:2px solid #1e90ff;padding-bottom:10px;margin-bottom:10px">
+ <img src="logo.png" width="60" style="border-radius:50%"><br>
+ <b>Sadia Clinic Karachi</b><br><small>Shop No.1, Plot 433, Sector C, Manzoor Colony</small>
+ </div>
+ <h3>${r.name} - ${r.age}Y - ${r.cell}</h3>
+ <p style="line-height:1.6;margin-top:8px"><b>Date:</b> ${r.date} | <b>Doctor:</b> ${r.consult}<br>
+ <b>Diagnosis:</b> ${r.diag}<br><b>Prescription:</b> ${r.pres}<br>
+ <b>Fee:</b> ${r.fee||0} + <b>Service:</b> ${r.service||0} = <b>Total: ${total}</b><br><b>Follow-up:</b> ${r.follow||'-'}</p>
+ <hr style="margin:10px 0">
+ <b>📸 Prescription Images:</b><div class="img-box" style="display:flex;flex-wrap:wrap">${(r.presImages||[]).map(im=>`<a href="${im}" download="Prescription-${r.name}.jpg" target="_blank"><img src="${im}"></a>`).join('')||'No Image'}</div>
+ <b>🧪 Test Reports:</b><div class="img-box" style="display:flex;flex-wrap:wrap">${(r.testImages||[]).map(im=>`<a href="${im}" download="Test-${r.name}.jpg" target="_blank"><img src="${im}"></a>`).join('')||'No Report'}</div>
+ <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+   <button class="small-btn btn-green" onclick="downloadPres(${i})">⬇️ Download Prescription</button>
+   <button class="small-btn btn-orange" onclick="openPDF(${i})">📄 Download as PDF</button>
+   <button class="small-btn btn-blue" onclick="document.getElementById('viewModal').classList.add('hidden')">Close</button>
+ </div>`;
+ document.getElementById('viewModal').classList.remove('hidden');
+}
+
+function downloadPres(i){
+ let r=JSON.parse(localStorage.getItem('sadia_opd')||'[]')[i];
+ if(!r.presImages||!r.presImages.length){alert('Prescription image nahi hai, text copy kar len');return}
+ // Download first image, rest open
+ r.presImages.forEach((im,idx)=>{
+   let a=document.createElement('a');a.href=im;a.download=`SadiaClinic-${r.name}-Prescription-${idx+1}.jpg`;document.body.appendChild(a);a.click();a.remove();
+ });
+ if(r.testImages&&r.testImages.length){
+   if(confirm('Test reports bhi download karni hain?')){r.testImages.forEach((im,idx)=>{let a=document.createElement('a');a.href=im;a.download=`SadiaClinic-${r.name}-Test-${idx+1}.jpg`;document.body.appendChild(a);a.click();a.remove();})}
+ }
+}
+
+function openPDF(i){
+ let r=JSON.parse(localStorage.getItem('sadia_opd')||'[]')[i];
+ let total=Number(r.fee||0)+Number(r.service||0);
+ const {jsPDF}=window.jspdf;
+ const doc=new jsPDF();
+ doc.setFontSize(14);doc.text('Sadia Clinic Karachi', 10, 15);
+ doc.setFontSize(9);doc.text('Shop No.1, Plot 433, Sector C, Mariam Masjid Road, Eidgah Chowk, Karachi',10,21);
+ doc.setFontSize(12);doc.text(`Patient: ${r.name} (${r.age||''}Y)`,10,30);
+ doc.text(`Cell: ${r.cell} | Date: ${r.date}`,10,37);
+ doc.text(`Doctor: ${r.consult}`,10,44);
+ doc.text(`Diagnosis: ${r.diag||'-'}`,10,51);
+ doc.setFontSize(10);
+ let presLines=doc.splitTextToSize(`Prescription: ${r.pres||'See Image'}`, 190);
+ doc.text(presLines,10,58);
+ let y=58+presLines.length*5+5;
+ doc.text(`Fee: ${r.fee||0} + Service: ${r.service||0} = Total: ${total}`,10,y);y+=7;
+ doc.text(`Follow-up: ${r.follow||'-'}`,10,y);
+ // Add first prescription image if exists
+ if(r.presImages&&r.presImages[0]){
+   try{doc.addImage(r.presImages[0],'JPEG',10,y+5,90,70);}catch(e){}
+ }
+ doc.save(`SadiaClinic-${r.name}-${r.date}.pdf`);
+ // Also open in new tab
+ // window.open(doc.output('bloburl'), '_blank');
+}
+
+document.getElementById('viewModal').addEventListener('click',e=>{if(e.target.id==='viewModal')e.target.classList.add('hidden')});
 </script></body></html>
