@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Check - Sadia Clinic</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#eaf0ff}
+.ayat{text-align:center;font-size:26px;color:#b8860b;padding:10px;background:#fff}
+.card{border-radius:18px;padding:16px;margin:10px auto;max-width:900px;box-shadow:0 8px 20px rgba(0,0,0,.07)}
+.logo-card{background:#fff;border:3px solid #1e90ff;text-align:center}
+.hospital-card{background:linear-gradient(135deg,#1e90ff,#0a2463);color:#fff;text-align:center;line-height:1.6}
+.form-card{background:#fff}
+input{width:100%;padding:14px;border-radius:12px;border:2px solid #cbd5e1;margin:8px 0;font-size:16px}
+.btn{background:linear-gradient(90deg,#1e90ff,#5f27cd);color:#fff;border:none;padding:12px 18px;border-radius:10px;font-weight:800;cursor:pointer}
+</style></head><body>
+<div class="ayat">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+<div class="card logo-card"><img src="logo.png" width="85" style="border-radius:50%"><br><b>Sadia Clinic KHI</b><br><small>Patient Record System</small></div>
+<div class="card hospital-card"><h2>Sadia Clinic Karachi</h2>Shop No.1, Plot No. 433, Sector C, Mariam Masjid Road,<br>Eidgah Chowk, Manzoor Colony, Karachi.</div>
+<div class="card form-card">
+<h2 style="text-align:center;color:#0a4eb5">🔍 Patient Record Check</h2>
+<p style="text-align:center;color:#64748b;font-size:14px;margin:8px 0">Apna Mobile Number likh kar Search karein</p>
+<div style="display:flex;gap:8px;max-width:500px;margin:16px auto"><input id="cell" type="text" placeholder="0300-XXXXXXX"><button class="btn" onclick="search()">Search</button></div>
+<div id="result"></div>
+<p style="text-align:center;margin-top:16px"><a href="index.html" style="text-decoration:none;background:#e0e7ff;padding:8px 14px;border-radius:20px;color:#0a2a7a;font-weight:700">Main Site</a></p>
+</div>
+<script>
+function search(){
+let c=cell.value.trim();if(!c){alert('Number likhein');return}
+let d=JSON.parse(localStorage.getItem('sadia_opd')||'[]').filter(r=>r.cell.includes(c));
+if(!d.length){result.innerHTML='<p style="text-align:center;color:red;padding:20px">Koi record nahi mila</p>';return}
+result.innerHTML=d.map(r=>`<div style="border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin:12px 0;background:#fff"><b style="font-size:16px">${r.name} (${r.age}Y)</b> - ${r.date}<br><small>${r.consult}</small><br><br><b>Diagnosis:</b> ${r.diag}<br><div style="background:#f0fdf4;padding:8px;border-radius:8px;margin-top:8px"><b>Prescription:</b> ${r.pres||'Photo me dekhein'}</div>${r.presImages?.length?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${r.presImages.map(im=>`<a href="${im}" target="_blank"><img src="${im}" style="width:110px;height:110px;border-radius:8px;border:2px solid #0a4eb5"></a>`).join('')}</div>`:''}</div>`).join('');
+}
+</script></body></html>
